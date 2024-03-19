@@ -56,7 +56,12 @@ function RuleForm() {
 
   const handleDeleteConditionGroup = (index) => {
     const updatedConditions = [...conditions];
-    updatedConditions.splice(index, 1);
+    const condition = updatedConditions[index]
+    if(condition.id) {
+      condition['_destroy'] = true
+    } else {
+      updatedConditions.splice(index, 1);
+    }
     setConditions(updatedConditions);
   };
 
@@ -81,7 +86,7 @@ function RuleForm() {
           <input type="text" value={adjustmentPercentage} onChange={(e) => setAdjustmentPercentage(e.target.value)} />
         </div>
         <h3>Conditions</h3>
-        {conditions.map((condition, index) => (
+        {conditions.filter((cond) => cond['_destroy'] !== true).map((condition, index) => (
           <div className="condition-group" key={index}>
             <div className="form-group">
               <label>Vehicle Attribute:</label>
